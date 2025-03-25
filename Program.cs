@@ -1,5 +1,6 @@
-using UsuarioApi.Context;
+using Tarefa_CRUD.Context;
 using Microsoft.EntityFrameworkCore;
+using Tarefa_CRUD.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddDbContext<TarefaContext>(options =>
 
 // Adicionar suporte a controllers
 builder.Services.AddControllers();
+
+// Registra o serviço TarefaServices
+builder.Services.AddScoped<TarefaServices>();
 
 // Configurar Swagger (documentação)
 builder.Services.AddEndpointsApiExplorer();

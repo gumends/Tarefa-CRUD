@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UsuarioApi.Context;
+using Tarefa_CRUD.Context;
 
 #nullable disable
 
 namespace Tarefa_CRUD.Migrations
 {
     [DbContext(typeof(TarefaContext))]
-    [Migration("20250324055244_CriandoTabelaTarefa")]
+    [Migration("20250325005459_CriandoTabelaTarefa")]
     partial class CriandoTabelaTarefa
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace Tarefa_CRUD.Migrations
 
             modelBuilder.Entity("Tarefa_CRUD.Models.Tarefa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");

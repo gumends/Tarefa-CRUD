@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tarefa_CRUD.Models;
 
-namespace UsuarioApi.Context
+namespace Tarefa_CRUD.Context
 {
     public class TarefaContext : DbContext
     {

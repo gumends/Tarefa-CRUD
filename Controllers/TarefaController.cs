@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Tarefa_CRUD.Models;
-using UsuarioApi.Context;
+using Tarefa_CRUD.Context;
+using Tarefa_CRUD.Services;
+using Tarefa_CRUD.DTO;
 
 namespace Tarefa_CRUD.Controllers
 {
@@ -15,39 +17,42 @@ namespace Tarefa_CRUD.Controllers
     {
 
         private readonly TarefaContext _context;
+        private readonly TarefaServices _tarefaServices;
 
-        public TarefaController(TarefaContext context)
+        public TarefaController(TarefaContext context, TarefaServices tarefaServices)
         {
             _context = context;
+            _tarefaServices = tarefaServices;
         }
 
         [HttpPost]
-        public IActionResult CriarTarefa(Tarefa tarefa)
+        public IActionResult CriarTarefa(TarefaDTO tarefaDTO)
         {
+            Tarefa tarefa = new Tarefa();
 
-            _context.Tarefas.Add(tarefa);
-            _context.SaveChanges();
+            tarefa.Titulo = tarefaDTO.Titulo;
+            tarefa.Descricao = tarefaDTO.Descricao;
+            tarefa.Data = tarefaDTO.Data;
 
+            _tarefaServices.CriarTarefa(tarefa);
             return Ok(tarefa);
         }
 
         [HttpGet]
         public IActionResult BuscarTodas()
         {
-            var tarefa = _context.Tarefas;
+            var tarefa = _tarefaServices.BuscarTodas();
             return Ok(tarefa);
         }
 
         [HttpGet("{id}")]
-        public IActionResult BuscarPorId(int id)
+        public IActionResult BuscarPorId(Guid id)
         {
-            var tarefa = _context.Tarefas.Find(id);
-
+            var tarefa = _tarefaServices.buscaPorId(id);
             if (tarefa == null)
             {
                 return NotFound();
             }
-
             return Ok(tarefa);
         }
 
@@ -59,22 +64,14 @@ namespace Tarefa_CRUD.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Atualizar(Tarefa t, int id)
+        public IActionResult Atualizar(TarefaDTO t, Guid id)
         {
-            var tarefa = _context.Tarefas.Find(id);
+            var tarefa = _tarefaServices.AtualizarTarefa(t, id);
 
             if (tarefa == null)
             {
                 return NotFound();
             }
-
-            tarefa.Titulo = t.Titulo;
-            tarefa.Descricao = t.Descricao;
-            tarefa.Status = t.Status;
-            tarefa.Data = t.Data;
-
-            _context.Tarefas.Update(tarefa);
-            _context.SaveChanges();
 
             return Ok(tarefa);
         }
