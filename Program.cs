@@ -2,8 +2,10 @@ using Tarefa_CRUD.Context;
 using Microsoft.EntityFrameworkCore;
 using Tarefa_CRUD.Services;
 
+// Configurar a aplicação
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar o banco de dados
 builder.Services.AddDbContext<TarefaContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
 
